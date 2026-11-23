@@ -1,174 +1,125 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const grade = document.querySelector("#grade-produtos");
+  const lista = document.getElementById("lista-produtos");
+  if (!lista) return;
 
-  if (!grade) return;
+  const contador = document.getElementById("contador-produtos");
+  const semProdutos = document.getElementById("sem-produtos");
+  const filtroPreco = document.getElementById("filtro-preco");
+  const valorPreco = document.getElementById("valor-preco");
+  const ordenacao = document.getElementById("ordenacao");
+  const limpar = document.getElementById("limpar-filtros");
 
-  const params = new URLSearchParams(location.search);
-  const buscaInicial = params.get("busca") || "";
-
-  const campoBusca = document.querySelector("#busca-produtos");
-
-  if (campoBusca) {
-    campoBusca.value = buscaInicial;
+  function valoresSelecionados(nome) {
+    return [...document.querySelectorAll(`input[name="${nome}"]:checked`)]
+      .map(input => input.value);
   }
 
-  const filtros = {
-    marcas: [...document.querySelectorAll("[name='marca']")],
-    geracoes: [...document.querySelectorAll("[name='geracao']")],
-    precos: [...document.querySelectorAll("[name='preco']")]
-  };
+  function renderizarProdutos() {
+    const marcas = valoresSelecionados("marca");
+    const linhas = valoresSelecionados("linha");
+    const geracoes = valoresSelecionados("geracao");
+    const precoMaximo = Number(filtroPreco.value);
+    const parametros = new URLSearchParams(window.location.search);
+    const busca = (parametros.get("busca") || "").toLowerCase();
 
-  function renderizar() {
-    const termo = (campoBusca?.value || "")
-      .toLowerCase()
-      .trim();
+    let filtrados = produtos.filter(produto => {
+      const correspondeMarca = !marcas.length || marcas.includes(produto.marca);
+      const correspondeLinha = !linhas.length || linhas.includes(produto.linha);
+      const correspondeGeracao = !geracoes.length || geracoes.includes(produto.geracao);
+      const correspondePreco = produto.preco <= precoMaximo;
+      const correspondeBusca = !busca || produto.nome.toLowerCase().includes(busca);
 
-    const marcasAtivas = filtros.marcas
-      .filter(el => el.checked)
-      .map(el => el.value);
-
-    const geracoesAtivas = filtros.geracoes
-      .filter(el => el.checked)
-      .map(el => el.value);
-
-    const precoAtivo =
-      filtros.precos.find(el => el.checked)?.value || "todos";
-
-    const ordem = document.querySelector("#ordenar")?.value || "popular";
-
-    let lista = produtos.filter(p => {
-      const combinaBusca =
-        `${p.nome} ${p.marca} ${p.geracao}`
-          .toLowerCase()
-          .includes(termo);
-
-      const combinaMarca =
-        !marcasAtivas.length || marcasAtivas.includes(p.marca);
-
-      const combinaGeracao =
-        !geracoesAtivas.length || geracoesAtivas.includes(p.geracao);
-
-      let combinaPreco = true;
-
-      if (precoAtivo === "0-1000") {
-        combinaPreco = p.preco <= 1000;
-      }
-
-      if (precoAtivo === "1000-2000") {
-        combinaPreco = p.preco > 1000 && p.preco <= 2000;
-      }
-
-      if (precoAtivo === "2000-4000") {
-        combinaPreco = p.preco > 2000 && p.preco <= 4000;
-      }
-
-      if (precoAtivo === "4000+") {
-        combinaPreco = p.preco > 4000;
-      }
-
-      return combinaBusca &&
-        combinaMarca &&
-        combinaGeracao &&
-        combinaPreco;
+      return correspondeMarca && correspondeLinha &&
+        correspondeGeracao && correspondePreco && correspondeBusca;
     });
 
-    if (ordem === "menor") {
-      lista.sort((a, b) => a.preco - b.preco);
+    switch (ordenacao.value) {
+      case "menor-preco":
+        filtrados.sort((a, b) => a.preco - b.preco);
+        break;
+      case "maior-preco":
+        filtrados.sort((a, b) => b.preco - a.preco);
+        break;
+      case "nome":
+        filtrados.sort((a, b) => a.nome.localeCompare(b.nome));
+        break;
+      default:
+        filtrados.sort((a, b) => b.avaliacao - a.avaliacao);
     }
 
-    if (ordem === "maior") {
-      lista.sort((a, b) => b.preco - a.preco);
-    }
+    contador.textContent = `Mostrando ${filtrados.length} de ${produtos.length} produtos`;
+    semProdutos.hidden = filtrados.length !== 0;
 
-    if (ordem === "nome") {
-      lista.sort((a, b) => a.nome.localeCompare(b.nome));
-    }
+    lista.innerHTML = filtrados.map(produto => {
+      const favoritos = JSON.parse(localStorage.getItem("favoritosMonkey") || "[]");
+      const favoritado = favoritos.includes(produto.id);
 
-    document.querySelector("#quantidade-resultados").textContent =
-      `Mostrando ${lista.length} de ${produtos.length}`;
-
-    grade.innerHTML = lista.length
-      ? lista.map(p => `
-        <article class="produto-card">
-
-          <button
-            class="card-favorito"
-            data-favorito="${p.id}"
-            aria-label="Favoritar"
-          >♡</button>
-
-          <a class="imagem-card" href="produto.html?id=${p.id}">
-            <img src="${p.imagem}" alt="${p.nome}" loading="lazy">
-          </a>
-
-          <a class="nome-card" href="produto.html?id=${p.id}">
-            ${p.nome}
-          </a>
-
-          <p class="descricao-card">
-            Potência e performance<br>
-            para o seu setup.
-          </p>
-
-          <div class="preco-card">
-            ${formatarPreco(p.preco)}
+      return `
+        <article class="card-produto">
+          <div class="imagem-produto">
+            <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
+            <button class="btn-favorito ${favoritado ? "favoritado" : ""}"
+              onclick="clicarFavorito(${produto.id}, this)" aria-label="Favoritar produto">
+              ${favoritado ? "♥" : "♡"}
+            </button>
           </div>
 
-          <button
-            class="botao-principal botao-card"
-            data-ver="${p.id}"
-          >
-            Ver produto <span>→</span>
-          </button>
+          <div class="informacoes-produto">
+            <span class="marca-produto">${produto.marca}</span>
+            <a class="nome-produto" href="produto.html?id=${produto.id}">
+              ${produto.nome}
+            </a>
 
+            <p class="especificacoes-resumo">
+              ${produto.nucleos} núcleos • ${produto.threads} threads • ${produto.turbo}
+            </p>
+
+            <div class="avaliacao">
+              <span>★</span> ${produto.avaliacao} (${produto.avaliacoes} avaliações)
+            </div>
+
+            <div class="preco-produto">
+              <del>${formatarPreco(produto.precoAntigo)}</del>
+              <strong>${formatarPreco(produto.preco)}</strong>
+            </div>
+
+            <button class="btn-carrinho" onclick="adicionarAoCarrinho(${produto.id})">
+              🛒 Adicionar ao carrinho
+            </button>
+          </div>
         </article>
-      `).join("")
-      : `
-        <p class="sem-resultados">
-          Nenhum processador encontrado.
-          Tente mudar os filtros.
-        </p>
       `;
-
-    grade.querySelectorAll("[data-ver]").forEach(botao => {
-      botao.addEventListener("click", () => {
-        location.href = `produto.html?id=${botao.dataset.ver}`;
-      });
-    });
-
-    grade.querySelectorAll("[data-favorito]").forEach(botao => {
-      botao.addEventListener("click", () => {
-        const ativo = alternarFavorito(botao.dataset.favorito);
-        botao.classList.toggle("ativo", ativo);
-      });
-    });
+    }).join("");
   }
 
-  [
-    ...filtros.marcas,
-    ...filtros.geracoes,
-    ...filtros.precos
-  ].forEach(el => {
-    el.addEventListener("change", renderizar);
+  window.clicarFavorito = function(id, botao) {
+    const favoritado = alternarFavorito(id);
+    botao.textContent = favoritado ? "♥" : "♡";
+    botao.classList.toggle("favoritado", favoritado);
+  };
+
+  document.querySelectorAll(".grupo-filtro input").forEach(input => {
+    input.addEventListener("change", renderizarProdutos);
   });
 
-  campoBusca?.addEventListener("input", renderizar);
+  filtroPreco.addEventListener("input", () => {
+    valorPreco.textContent = formatarPreco(Number(filtroPreco.value));
+    renderizarProdutos();
+  });
 
-  document.querySelector("#ordenar")
-    ?.addEventListener("change", renderizar);
+  ordenacao.addEventListener("change", renderizarProdutos);
 
-  document.querySelector("#limpar-filtros")
-    ?.addEventListener("click", () => {
-      [
-        ...filtros.marcas,
-        ...filtros.geracoes,
-        ...filtros.precos
-      ].forEach(el => el.checked = false);
-
-      if (campoBusca) campoBusca.value = "";
-
-      renderizar();
+  limpar.addEventListener("click", () => {
+    document.querySelectorAll(".grupo-filtro input").forEach(input => {
+      input.checked = false;
     });
 
-  renderizar();
+    filtroPreco.value = 4000;
+    valorPreco.textContent = formatarPreco(4000);
+    ordenacao.value = "popular";
+    renderizarProdutos();
+  });
+
+  valorPreco.textContent = formatarPreco(4000);
+  renderizarProdutos();
 });

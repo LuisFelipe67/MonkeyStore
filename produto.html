@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Produto | Monkey Store</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
   <link rel="stylesheet" href="loja.css">
-
-  <script defer src="data.js"></script>
-  <script defer src="layout.js"></script>
-  <script defer src="produto.js"></script>
+  <script src="layout.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="produto.js" defer></script>
 </head>
+<body>
+  <div id="cabecalho"></div>
 
-<body class="pagina-produto">
+  <main class="container">
+    <div class="breadcrumb">
+      Início <span>›</span> Categorias <span>›</span>
+      <a href="processadores.html">Processadores</a> <span>›</span> Produto
+    </div>
 
-  <header class="topo" id="cabecalho"></header>
+    <section id="detalhes-produto" class="detalhes-produto">
+      <p>Carregando produto...</p>
+    </section>
 
-  <main class="conteudo conteudo-produto">
+    <section class="secao-informacoes">
+      <h2>Sobre o produto</h2>
+      <p id="descricao-produto"></p>
+    </section>
 
-    <div class="breadcrumb" id="breadcrumb-produto"></div>
+    <section class="secao-informacoes">
+      <h2>Especificações técnicas</h2>
+      <div id="especificacoes-produto" class="especificacoes"></div>
+    </section>
 
-    <div class="detalhe-produto" id="detalhe-produto"></div>
-
+    <a href="processadores.html" class="voltar-loja">← Voltar para processadores</a>
   </main>
 
-  <footer class="rodape">
-    © 2026 Monkey Store · Tecnologia para o seu setup.
-  </footer>
-
+  <div id="rodape"></div>
 </body>
 </html>

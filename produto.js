@@ -1,160 +1,98 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const id = new URLSearchParams(location.search).get("id") || 9;
-
-  const produto = obterProduto(id);
-
-  const area = document.querySelector("#detalhe-produto");
-
+  const area = document.getElementById("detalhes-produto");
   if (!area) return;
+
+  const parametros = new URLSearchParams(window.location.search);
+  const id = parametros.get("id");
+  const produto = obterProduto(id);
 
   if (!produto) {
     area.innerHTML = `
-      <p class="sem-resultados">
-        Produto não encontrado.
-        <a href="processadores.html">Voltar à loja</a>
-      </p>
+      <div class="produto-nao-encontrado">
+        <h2>Produto não encontrado</h2>
+        <p>Não foi possível localizar esse processador.</p>
+        <a href="processadores.html" class="btn-carrinho">Voltar à loja</a>
+      </div>
     `;
     return;
   }
 
-  document.querySelector("#breadcrumb-produto").innerHTML = `
-    Categorias &gt;
-    <a href="processadores.html">Processadores</a>
-    &gt; ${produto.nome}
-  `;
+  document.title = `${produto.nome} | Monkey Store`;
 
   area.innerHTML = `
-    <div class="galeria-produto">
-
-      <div class="imagem-destaque">
-
-        <button class="seta-galeria esquerda">‹</button>
-
-        <img
-          id="imagem-principal"
-          src="${produto.imagem}"
-          alt="${produto.nome}"
-        >
-
-        <button class="seta-galeria direita">›</button>
-
-      </div>
-
-      <div class="miniaturas">
-
-        <button class="miniatura selecionada">
-          <img src="${produto.imagem}" alt="Imagem principal">
-        </button>
-
-        <button class="miniatura">
-          <img src="${produto.imagem}" alt="Detalhe do produto">
-        </button>
-
-      </div>
-
+    <div class="produto-imagem-detalhe">
+      <span class="tag-destaque">Em destaque</span>
+      <img src="${produto.imagem}" alt="${produto.nome}">
     </div>
 
-    <section class="informacoes-produto">
-
-      <span class="etiqueta">${produto.marca}</span>
-
+    <div class="produto-info-detalhe">
+      <span class="marca-produto">${produto.marca}</span>
       <h1>${produto.nome}</h1>
 
       <div class="avaliacao">
-        <span>★★★★★</span>
-        <b>4.5</b>
-        <small>(145 avaliações)</small>
+        <span>★</span> ${produto.avaliacao} (${produto.avaliacoes} avaliações)
+      </div>
+
+      <p class="descricao-curta">${produto.descricao}</p>
+
+      <div class="recursos-produto">
+        <div>
+          <strong>${produto.nucleos}</strong>
+          <span>Núcleos</span>
+        </div>
+        <div>
+          <strong>${produto.threads}</strong>
+          <span>Threads</span>
+        </div>
+        <div>
+          <strong>${produto.turbo}</strong>
+          <span>Turbo</span>
+        </div>
       </div>
 
       <div class="preco-detalhe">
-        ${formatarPreco(produto.preco)}
+        <del>${formatarPreco(produto.precoAntigo)}</del>
+        <strong>${formatarPreco(produto.preco)}</strong>
       </div>
 
-      <div class="preco-antigo">
-        ${formatarPreco(produto.precoAntigo)}
-        <span>15% OFF</span>
-      </div>
+      <p class="aviso-pagamento">Consulte as condições de pagamento disponíveis.</p>
 
-      <div class="linha-divisoria"></div>
-
-      <div class="especificacoes">
-
-        <div>
-          <strong>ϟ</strong>
-          <span>
-            ${produto.nucleos} Núcleos<br>
-            ${produto.threads} Threads
-          </span>
-        </div>
-
-        <div>
-          <strong>◉</strong>
-          <span>
-            Até ${produto.clock}<br>
-            de frequência
-          </span>
-        </div>
-
-      </div>
-
-      <p class="descricao-detalhe">
-        ${produto.descricao}
-      </p>
-
-      <button
-        class="botao-principal botao-comprar"
-        id="adicionar-carrinho"
-      >
+      <button class="btn-carrinho btn-carrinho-detalhe"
+        onclick="adicionarAoCarrinho(${produto.id})">
         🛒 Adicionar ao carrinho
       </button>
 
-      <button
-        class="botao-favorito"
-        id="adicionar-favorito"
-      >
-        ♥ Adicionar aos favoritos
+      <button class="btn-favorito-detalhe" id="favoritar-detalhe">
+        ♡ Adicionar aos favoritos
       </button>
-
-      <p class="entrega">
-        ✓ Produto disponível · Envio para todo o Brasil
-      </p>
-
-    </section>
+    </div>
   `;
 
-  document.querySelector("#adicionar-carrinho")
-    .addEventListener("click", () => {
-      adicionarAoCarrinho(produto.id);
-    });
+  document.getElementById("descricao-produto").textContent = produto.descricao;
 
-  const favorito = document.querySelector("#adicionar-favorito");
+  document.getElementById("especificacoes-produto").innerHTML = `
+    <div><span>Marca</span><strong>${produto.marca}</strong></div>
+    <div><span>Modelo</span><strong>${produto.nome}</strong></div>
+    <div><span>Linha</span><strong>${produto.linha}</strong></div>
+    <div><span>Geração</span><strong>${produto.geracao}</strong></div>
+    <div><span>Núcleos</span><strong>${produto.nucleos}</strong></div>
+    <div><span>Threads</span><strong>${produto.threads}</strong></div>
+    <div><span>Clock base</span><strong>${produto.clock}</strong></div>
+    <div><span>Clock turbo</span><strong>${produto.turbo}</strong></div>
+    <div><span>Socket</span><strong>${produto.socket}</strong></div>
+  `;
 
-  const favoritos = JSON.parse(
-    localStorage.getItem("monkey-favoritos") || "[]"
-  );
+  const botaoFavorito = document.getElementById("favoritar-detalhe");
+  const favoritos = JSON.parse(localStorage.getItem("favoritosMonkey") || "[]");
 
   if (favoritos.includes(produto.id)) {
-    favorito.classList.add("ativo");
-    favorito.textContent = "♥ Adicionado aos favoritos";
+    botaoFavorito.textContent = "♥ Adicionado aos favoritos";
   }
 
-  favorito.addEventListener("click", () => {
-    const ativo = alternarFavorito(produto.id);
-
-    favorito.classList.toggle("ativo", ativo);
-
-    favorito.textContent = ativo
+  botaoFavorito.addEventListener("click", () => {
+    const favoritado = alternarFavorito(produto.id);
+    botaoFavorito.textContent = favoritado
       ? "♥ Adicionado aos favoritos"
-      : "♥ Adicionar aos favoritos";
-  });
-
-  document.querySelectorAll(".miniatura").forEach(miniatura => {
-    miniatura.addEventListener("click", () => {
-      document.querySelectorAll(".miniatura").forEach(m => {
-        m.classList.remove("selecionada");
-      });
-
-      miniatura.classList.add("selecionada");
-    });
+      : "♡ Adicionar aos favoritos";
   });
 });

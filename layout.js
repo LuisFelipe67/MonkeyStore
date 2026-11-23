@@ -1,129 +1,108 @@
-function montarLayout() {
-  const header = document.querySelector("#cabecalho");
+document.addEventListener("DOMContentLoaded", () => {
+  const cabecalho = document.getElementById("cabecalho");
+  const rodape = document.getElementById("rodape");
 
-  if (!header) return;
+  if (cabecalho) {
+    cabecalho.innerHTML = `
+      <header class="header">
+        <div class="header-conteudo">
+          <a href="processadores.html" class="logo">
+            <span class="logo-simbolo">M</span>
+            <span>Monkey <strong>Store</strong></span>
+          </a>
 
-  header.innerHTML = `
-    <a class="marca-loja" href="processadores.html">
-      <span class="marca-simbolo">◈</span>
-      <span>Monkey <b>Store</b></span>
-    </a>
+          <nav class="navegacao">
+            <a href="processadores.html">Início</a>
+            <a href="processadores.html">Produtos</a>
+            <a href="processadores.html">Categorias</a>
+            <a href="processadores.html">Ofertas</a>
+            <a href="processadores.html">Sobre nós</a>
+            <a href="processadores.html">Contato</a>
+          </nav>
 
-    <nav class="menu-principal">
-      <a href="processadores.html">Início</a>
-      <a href="processadores.html">Produtos</a>
-      <a href="processadores.html">Categorias</a>
-      <a href="processadores.html">Ofertas</a>
-      <a href="#">Sobre nós</a>
-      <a href="#">Contato</a>
-    </nav>
+          <div class="acoes-header">
+            <input type="search" id="busca-header" placeholder="O que você está procurando?">
+            <a href="#" aria-label="Favoritos">♡</a>
+            <a href="#" aria-label="Carrinho">🛒 <span id="quantidade-carrinho">0</span></a>
+          </div>
+        </div>
+      </header>
+    `;
+  }
 
-    <div class="acoes-header">
-      <label class="busca">
-        <input
-          id="busca-global"
-          type="search"
-          placeholder="O que você está procurando?"
-        >
-        <span>⌕</span>
-      </label>
+  if (rodape) {
+    rodape.innerHTML = `
+      <footer class="rodape">
+        <div class="rodape-conteudo">
+          <a href="processadores.html" class="logo">
+            <span class="logo-simbolo">M</span>
+            <span>Monkey <strong>Store</strong></span>
+          </a>
 
-      <button class="icone-header">♙</button>
-      <button class="icone-header" id="atalho-carrinho">
-        🛒
-        <i id="contador-carrinho">0</i>
-      </button>
-      <button class="icone-header">♡</button>
-      <button class="menu-mobile" id="menu-mobile">☰</button>
-    </div>
-  `;
+          <div class="links-rodape">
+            <a href="#">Políticas</a>
+            <a href="#">Atendimento</a>
+            <a href="#">Termos de uso</a>
+            <a href="#">Privacidade</a>
+          </div>
+        </div>
 
-  const menu = header.querySelector(".menu-mobile");
+        <div class="rodape-final">
+          <span>© 2025 Monkey Store. Todos os direitos reservados.</span>
+          <strong>Monte. Jogue. Evolua.</strong>
+        </div>
+      </footer>
+    `;
+  }
 
-  menu?.addEventListener("click", () => {
-    header.classList.toggle("menu-aberto");
-  });
+  atualizarCarrinho();
 
-  atualizarContadorCarrinho();
-
-  document.querySelector("#atalho-carrinho")
-    ?.addEventListener("click", () => {
-      alert("Seu carrinho está salvo nesta demonstração.");
-    });
-
-  document.querySelector("#busca-global")
-    ?.addEventListener("keydown", event => {
+  const busca = document.getElementById("busca-header");
+  if (busca) {
+    busca.addEventListener("keydown", event => {
       if (event.key === "Enter") {
-        const termo = event.currentTarget.value.trim();
-
+        const termo = busca.value.trim();
         if (termo) {
-          location.href =
-            `processadores.html?busca=${encodeURIComponent(termo)}`;
+          window.location.href = `processadores.html?busca=${encodeURIComponent(termo)}`;
         }
       }
     });
-}
+  }
+});
 
-function atualizarContadorCarrinho() {
-  const contador = document.querySelector("#contador-carrinho");
+function atualizarCarrinho() {
+  const carrinho = JSON.parse(localStorage.getItem("carrinhoMonkey") || "[]");
+  const quantidade = carrinho.reduce((total, item) => total + item.quantidade, 0);
+  const elemento = document.getElementById("quantidade-carrinho");
 
-  if (!contador) return;
-
-  const carrinho = JSON.parse(
-    localStorage.getItem("monkey-carrinho") || "[]"
-  );
-
-  contador.textContent = carrinho.reduce(
-    (total, item) => total + item.quantidade,
-    0
-  );
+  if (elemento) elemento.textContent = quantidade;
 }
 
 function adicionarAoCarrinho(id) {
-  const carrinho = JSON.parse(
-    localStorage.getItem("monkey-carrinho") || "[]"
-  );
-
-  const item = carrinho.find(
-    produto => produto.id === Number(id)
-  );
+  const carrinho = JSON.parse(localStorage.getItem("carrinhoMonkey") || "[]");
+  const item = carrinho.find(produto => produto.id === Number(id));
 
   if (item) {
-    item.quantidade += 1;
+    item.quantidade++;
   } else {
-    carrinho.push({
-      id: Number(id),
-      quantidade: 1
-    });
+    carrinho.push({ id: Number(id), quantidade: 1 });
   }
 
-  localStorage.setItem(
-    "monkey-carrinho",
-    JSON.stringify(carrinho)
-  );
-
-  atualizarContadorCarrinho();
-
+  localStorage.setItem("carrinhoMonkey", JSON.stringify(carrinho));
+  atualizarCarrinho();
   alert("Produto adicionado ao carrinho!");
 }
 
 function alternarFavorito(id) {
-  const favoritos = JSON.parse(
-    localStorage.getItem("monkey-favoritos") || "[]"
-  );
+  const favoritos = JSON.parse(localStorage.getItem("favoritosMonkey") || "[]");
+  const indice = favoritos.indexOf(Number(id));
 
-  const existe = favoritos.includes(Number(id));
+  if (indice >= 0) {
+    favoritos.splice(indice, 1);
+  } else {
+    favoritos.push(Number(id));
+  }
 
-  const atualizados = existe
-    ? favoritos.filter(item => item !== Number(id))
-    : [...favoritos, Number(id)];
-
-  localStorage.setItem(
-    "monkey-favoritos",
-    JSON.stringify(atualizados)
-  );
-
-  return !existe;
+  localStorage.setItem("favoritosMonkey", JSON.stringify(favoritos));
+  return favoritos.includes(Number(id));
 }
-
-document.addEventListener("DOMContentLoaded", montarLayout);
