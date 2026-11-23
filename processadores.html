@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Processadores | Monkey Store</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="loja.css">
+
+  <script defer src="data.js"></script>
+  <script defer src="layout.js"></script>
+  <script defer src="listagem.js"></script>
+</head>
+
+<body class="pagina-listagem">
+
+  <header class="topo" id="cabecalho"></header>
+
+  <main class="conteudo">
+
+    <section class="banner-categoria">
+
+      <div class="banner-texto">
+
+        <h1>Processadores</h1>
+
+        <p>Desempenho de ponta para seu setup</p>
+
+        <span>
+          Escolha entre as melhores marcas do mercado, com<br>
+          alta performance para jogos, trabalho e muito mais.
+        </span>
+
+      </div>
+
+    </section>
+
+    <div class="barra-listagem">
+
+      <div class="titulo-filtros">
+        <span>⌁</span> Filtros
+      </div>
+
+      <div class="ordenacao">
+
+        <label for="ordenar">Ordenar por:</label>
+
+        <select id="ordenar">
+          <option value="popular">Mais populares</option>
+          <option value="menor">Menor preço</option>
+          <option value="maior">Maior preço</option>
+          <option value="nome">Nome</option>
+        </select>
+
+      </div>
+
+      <span class="quantidade" id="quantidade-resultados"></span>
+
+    </div>
+
+    <div class="layout-listagem">
+
+      <aside class="painel-filtros">
+
+        <div class="filtro-topo">
+
+          <strong>⌕ Filtros</strong>
+
+          <button id="limpar-filtros">Limpar</button>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+          <h3>Preço</h3>
+
+          <label>
+            <input type="radio" name="preco" value="todos" checked>
+            Todos
+          </label>
+
+          <label>
+            <input type="radio" name="preco" value="0-1000">
+            Até R$ 1.000
+          </label>
+
+          <label>
+            <input type="radio" name="preco" value="1000-2000">
+            R$ 1.000 - R$ 2.000
+          </label>
+
+          <label>
+            <input type="radio" name="preco" value="2000-4000">
+            R$ 2.000 - R$ 4.000
+          </label>
+
+          <label>
+            <input type="radio" name="preco" value="4000+">
+            Acima de R$ 4.000
+          </label>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+          <h3>Marca</h3>
+
+          <label>
+            <input type="checkbox" name="marca" value="Intel">
+            Intel <small>(4)</small>
+          </label>
+
+          <label>
+            <input type="checkbox" name="marca" value="AMD">
+            AMD <small>(5)</small>
+          </label>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+          <h3>Geração</h3>
+
+          <label>
+            <input type="checkbox" name="geracao" value="12ª geração">
+            12ª geração
+          </label>
+
+          <label>
+            <input type="checkbox" name="geracao" value="14ª geração">
+            14ª geração
+          </label>
+
+          <label>
+            <input type="checkbox" name="geracao" value="Core Ultra">
+            Core Ultra
+          </label>
+
+          <label>
+            <input type="checkbox" name="geracao" value="Ryzen 5000">
+            Ryzen 5000
+          </label>
+
+          <label>
+            <input type="checkbox" name="geracao" value="Ryzen 9000">
+            Ryzen 9000
+          </label>
+
+        </div>
+
+      </aside>
+
+      <section class="area-produtos">
+
+        <div class="busca-listagem">
+          <input
+            id="busca-produtos"
+            type="search"
+            placeholder="Buscar processador..."
+          >
+        </div>
+
+        <div class="grade-produtos" id="grade-produtos"></div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    © 2026 Monkey Store · Tecnologia para o seu setup.
+  </footer>
+
+</body>
+</html>
