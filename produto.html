@@ -2,39 +2,17 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Produto | Monkey Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="loja.css">
-  <script src="layout.js" defer></script>
-  <script src="data.js" defer></script>
-  <script src="produto.js" defer></script>
 </head>
 <body>
-  <div id="cabecalho"></div>
+  <p class="crumb" id="crumb"></p>
 
-  <main class="container">
-    <div class="breadcrumb">
-      Início <span>›</span> Categorias <span>›</span>
-      <a href="processadores.html">Processadores</a> <span>›</span> Produto
-    </div>
+  <main class="produto" id="produto"></main>
 
-    <section id="detalhes-produto" class="detalhes-produto">
-      <p>Carregando produto...</p>
-    </section>
-
-    <section class="secao-informacoes">
-      <h2>Sobre o produto</h2>
-      <p id="descricao-produto"></p>
-    </section>
-
-    <section class="secao-informacoes">
-      <h2>Especificações técnicas</h2>
-      <div id="especificacoes-produto" class="especificacoes"></div>
-    </section>
-
-    <a href="processadores.html" class="voltar-loja">← Voltar para processadores</a>
-  </main>
-
-  <div id="rodape"></div>
+  <script src="data.js"></script>
+  <script src="produto.js"></script>
 </body>
 </html>

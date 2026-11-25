@@ -2,90 +2,61 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Processadores | Monkey Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="loja.css">
-  <script src="layout.js" defer></script>
-  <script src="data.js" defer></script>
-  <script src="listagem.js" defer></script>
 </head>
 <body>
-  <div id="cabecalho"></div>
+  <p class="crumb"><a href="categorias.html">Categorias</a> &gt; <a href="processadores.html">Processadores</a></p>
 
-  <main class="container">
-    <div class="breadcrumb">Início <span>›</span> Categorias <span>›</span> Processadores</div>
-
-    <section class="banner-categoria">
-      <div>
-        <span class="tag-categoria">CATEGORIA</span>
-        <h1>Processadores</h1>
-        <h2>Desempenho de ponta para o seu setup.</h2>
-        <p>Escolha entre as melhores marcas do mercado, com alta performance para jogos, trabalho e muito mais.</p>
-      </div>
-      <div class="banner-chip">CPU</div>
-    </section>
-
-    <div class="layout-listagem">
-      <aside class="painel-filtros">
-        <div class="titulo-filtros">
-          <h2>Filtros</h2>
-          <span>☷</span>
-        </div>
-
-        <div class="grupo-filtro">
-          <h3>Marca</h3>
-          <label><input type="checkbox" name="marca" value="Intel"> Intel</label>
-          <label><input type="checkbox" name="marca" value="AMD"> AMD</label>
-        </div>
-
-        <div class="grupo-filtro">
-          <h3>Linha</h3>
-          <label><input type="checkbox" name="linha" value="Intel Core"> Intel Core</label>
-          <label><input type="checkbox" name="linha" value="AMD Ryzen"> AMD Ryzen</label>
-          <label><input type="checkbox" name="linha" value="Intel Core Ultra"> Intel Core Ultra</label>
-        </div>
-
-        <div class="grupo-filtro">
-          <h3>Geração</h3>
-          <label><input type="checkbox" name="geracao" value="12ª Geração"> 12ª Geração</label>
-          <label><input type="checkbox" name="geracao" value="13ª Geração"> 13ª Geração</label>
-          <label><input type="checkbox" name="geracao" value="14ª Geração"> 14ª Geração</label>
-          <label><input type="checkbox" name="geracao" value="Core Ultra"> Core Ultra</label>
-          <label><input type="checkbox" name="geracao" value="Ryzen 5000"> Ryzen 5000</label>
-          <label><input type="checkbox" name="geracao" value="Ryzen 7000"> Ryzen 7000</label>
-          <label><input type="checkbox" name="geracao" value="Ryzen 9000"> Ryzen 9000</label>
-        </div>
-
-        <div class="grupo-filtro">
-          <h3>Faixa de preço</h3>
-          <div class="preco-valores">
-            <span>R$ 400</span>
-            <span id="valor-preco">R$ 4.000</span>
-          </div>
-          <input type="range" id="filtro-preco" min="400" max="4000" step="100" value="4000">
-        </div>
-
-        <button class="btn-limpar" id="limpar-filtros">Limpar filtros</button>
-      </aside>
-
-      <section class="conteudo-produtos">
-        <div class="barra-produtos">
-          <label for="ordenacao">Ordenar por:</label>
-          <select id="ordenacao">
-            <option value="popular">Mais populares</option>
-            <option value="menor-preco">Menor preço</option>
-            <option value="maior-preco">Maior preço</option>
-            <option value="nome">Nome A–Z</option>
-          </select>
-          <span id="contador-produtos">Mostrando 0 produtos</span>
-        </div>
-
-        <div class="grade-produtos" id="lista-produtos"></div>
-        <p class="sem-produtos" id="sem-produtos" hidden>Nenhum processador encontrado com esses filtros.</p>
-      </section>
+  <section class="banner">
+    <div>
+      <h1>Processadores</h1>
+      <p class="banner__sub">Desempenho de ponta para seu setup</p>
+      <p class="banner__txt">Escolha entre as melhores marcas do mercado, com alta performance para jogos, trabalho e muito mais.</p>
     </div>
+  </section>
+
+  <main class="lista">
+    <aside class="filtros-wrap">
+      <h2 class="filtros-titulo" id="ico-filtro"> Filtros</h2>
+      <form class="filtros" id="filtros">
+        <fieldset>
+          <legend>Preço</legend>
+          <div class="minmax">
+            <input type="number" id="min" min="0" placeholder="Mínimo" aria-label="Preço mínimo">
+            <span>—</span>
+            <input type="number" id="max" min="0" placeholder="Máximo" aria-label="Preço máximo">
+          </div>
+          <label><input type="checkbox" name="faixa" value="0"> Até R$ 1000</label>
+          <label><input type="checkbox" name="faixa" value="1"> R$ 1000 - R$ 2000</label>
+          <label><input type="checkbox" name="faixa" value="2"> R$ 2000 - R$ 4000</label>
+          <label><input type="checkbox" name="faixa" value="3"> Acima de R$ 4000</label>
+        </fieldset>
+        <fieldset id="f-marca"><legend>Marca</legend></fieldset>
+        <fieldset id="f-geracao"><legend>Geração</legend></fieldset>
+        <button type="reset" class="limpar">Limpar filtros</button>
+      </form>
+    </aside>
+
+    <section>
+      <div class="barra">
+        <label>Ordenar por:
+          <select id="ordem">
+            <option value="pop">Mais populares</option>
+            <option value="menor">Menor preço</option>
+            <option value="maior">Maior preço</option>
+            <option value="nome">Nome (A–Z)</option>
+          </select>
+        </label>
+        <span id="contagem"></span>
+      </div>
+      <div class="grade" id="grade"></div>
+    </section>
   </main>
 
-  <div id="rodape"></div>
+  <script src="data.js"></script>
+  <script src="listagem.js"></script>
 </body>
 </html>

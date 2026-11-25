@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico de Pedidos | Monkey Store</title>
+
+  <link rel="stylesheet" href="loja.css">
+  <link rel="stylesheet" href="historico.css">
+
+  <script src="historico.js" defer></script>
+</head>
+<body>
+
+  <main class="historico">
+
+    <section class="historico__topo">
+      <div>
+        <div class="historico__breadcrumb">
+          <a href="index.html">Minha conta</a>
+          <span> &gt; </span>
+          <span>Histórico de pedidos</span>
+        </div>
+
+        <h1>Histórico de <span>Pedidos</span></h1>
+
+        <p>Acompanhe o status de todos os seus pedidos atualizados.</p>
+      </div>
+
+      <div class="historico__ilustracao">
+        <svg viewBox="0 0 150 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 25H65M4 39H45M15 53H57M3 67H40M16 81H57"
+            stroke="#7C3AED" stroke-width="4" stroke-linecap="round"/>
+
+          <path d="M91 12L124 30V69L91 88L58 69V30L91 12Z"
+            stroke="#A35DFF" stroke-width="4" stroke-linejoin="round"/>
+
+          <path d="M58 30L91 49L124 30M91 49V88M75 21L108 40"
+            stroke="#A35DFF" stroke-width="4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="historico__lista" id="lista-pedidos"></section>
+
+  </main>
+
+</body>
+</html>

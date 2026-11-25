@@ -1,301 +1,68 @@
-const produtos = [
-  {
-    id: 1, nome: "Intel Core i5-12400F", marca: "Intel", linha: "Intel Core",
-    geracao: "12ª Geração", preco: 749.90, precoAntigo: 899.90,
-    nucleos: 6, threads: 12, clock: "2.5 GHz", turbo: "4.4 GHz",
-    socket: "LGA 1700", avaliacao: 4.8, avaliacoes: 562,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i5 de 12ª geração, indicado para jogos e multitarefas."
-  },
-  {
-    id: 2, nome: "AMD Ryzen 7 5700X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 1299.90, precoAntigo: 1499.90,
-    nucleos: 8, threads: 16, clock: "3.4 GHz", turbo: "4.6 GHz",
-    socket: "AM4", avaliacao: 4.9, avaliacoes: 378,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador AMD Ryzen 7 com ótimo desempenho para jogos e produtividade."
-  },
-  {
-    id: 3, nome: "Intel Core i7-13700F", marca: "Intel", linha: "Intel Core",
-    geracao: "13ª Geração", preco: 1999.90, precoAntigo: 2199.90,
-    nucleos: 16, threads: 24, clock: "2.1 GHz", turbo: "5.2 GHz",
-    socket: "LGA 1700", avaliacao: 4.8, avaliacoes: 294,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i7 de 13ª geração para alto desempenho."
-  },
-  {
-    id: 4, nome: "AMD Ryzen 5 7600", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 7000", preco: 1099.90, precoAntigo: 1299.90,
-    nucleos: 6, threads: 12, clock: "3.8 GHz", turbo: "5.1 GHz",
-    socket: "AM5", avaliacao: 4.7, avaliacoes: 256,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador AMD Ryzen 5 da série 7000, com arquitetura moderna."
-  },
-  {
-    id: 5, nome: "Intel Core i9-13900K", marca: "Intel", linha: "Intel Core",
-    geracao: "13ª Geração", preco: 3499.90, precoAntigo: 3799.90,
-    nucleos: 24, threads: 32, clock: "3.0 GHz", turbo: "5.8 GHz",
-    socket: "LGA 1700", avaliacao: 4.9, avaliacoes: 312,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i9 desenvolvido para tarefas exigentes."
-  },
-  {
-    id: 6, nome: "AMD Ryzen 9 7950X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 7000", preco: 3299.90, precoAntigo: 3599.90,
-    nucleos: 16, threads: 32, clock: "4.5 GHz", turbo: "5.7 GHz",
-    socket: "AM5", avaliacao: 4.9, avaliacoes: 176,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador AMD Ryzen 9 de alto desempenho para criação e jogos."
-  },
-  {
-    id: 7, nome: "AMD Ryzen 5 5600", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 739.90, precoAntigo: 849.90,
-    nucleos: 6, threads: 12, clock: "3.5 GHz", turbo: "4.4 GHz",
-    socket: "AM4", avaliacao: 4.8, avaliacoes: 892,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 5 com excelente custo-benefício para jogos."
-  },
-  {
-    id: 8, nome: "Intel Core i5-13600K", marca: "Intel", linha: "Intel Core",
-    geracao: "13ª Geração", preco: 1799.90, precoAntigo: 1999.90,
-    nucleos: 14, threads: 20, clock: "3.5 GHz", turbo: "5.1 GHz",
-    socket: "LGA 1700", avaliacao: 4.8, avaliacoes: 198,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i5 desbloqueado para alto desempenho."
-  },
-  {
-    id: 9, nome: "AMD Ryzen 9 7900X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 7000", preco: 2499.90, precoAntigo: 2799.90,
-    nucleos: 12, threads: 24, clock: "4.7 GHz", turbo: "5.6 GHz",
-    socket: "AM5", avaliacao: 4.9, avaliacoes: 187,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 9 para jogos, edição e tarefas profissionais."
-  },
-  {
-    id: 10, nome: "AMD Ryzen 7 7800X3D", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 7000", preco: 2299.90, precoAntigo: 2599.90,
-    nucleos: 8, threads: 16, clock: "4.2 GHz", turbo: "5.0 GHz",
-    socket: "AM5", avaliacao: 4.9, avaliacoes: 427,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen com tecnologia 3D V-Cache, voltado especialmente para jogos."
-  },
-  {
-    id: 11, nome: "Intel Core i7-12700F", marca: "Intel", linha: "Intel Core",
-    geracao: "12ª Geração", preco: 1399.90, precoAntigo: 1599.90,
-    nucleos: 12, threads: 20, clock: "2.1 GHz", turbo: "4.9 GHz",
-    socket: "LGA 1700", avaliacao: 4.6, avaliacoes: 231,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i7 para jogos e produtividade."
-  },
-  {
-    id: 12, nome: "Intel Core Ultra 7 265K", marca: "Intel", linha: "Intel Core Ultra",
-    geracao: "Core Ultra", preco: 2799.90, precoAntigo: 2999.90,
-    nucleos: 20, threads: 20, clock: "3.3 GHz", turbo: "5.5 GHz",
-    socket: "LGA 1851", avaliacao: 4.8, avaliacoes: 142,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core Ultra de nova geração para alto desempenho."
-  },
-  {
-    id: 13, nome: "Intel Core i3-12100F", marca: "Intel", linha: "Intel Core",
-    geracao: "12ª Geração", preco: 499.90, precoAntigo: 579.90,
-    nucleos: 4, threads: 8, clock: "3.3 GHz", turbo: "4.3 GHz",
-    socket: "LGA 1700", avaliacao: 4.7, avaliacoes: 185,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador de entrada para computadores domésticos e jogos."
-  },
-  {
-    id: 14, nome: "Intel Core i5-12600KF", marca: "Intel", linha: "Intel Core",
-    geracao: "12ª Geração", preco: 1099.90, precoAntigo: 1249.90,
-    nucleos: 10, threads: 16, clock: "3.7 GHz", turbo: "4.9 GHz",
-    socket: "LGA 1700", avaliacao: 4.8, avaliacoes: 167,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i5 desbloqueado para configurações gamer."
-  },
-  {
-    id: 15, nome: "Intel Core i7-12700KF", marca: "Intel", linha: "Intel Core",
-    geracao: "12ª Geração", preco: 1499.90, precoAntigo: 1699.90,
-    nucleos: 12, threads: 20, clock: "3.6 GHz", turbo: "5.0 GHz",
-    socket: "LGA 1700", avaliacao: 4.7, avaliacoes: 142,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i7 desbloqueado para alto desempenho."
-  },
-  {
-    id: 16, nome: "Intel Core i9-12900K", marca: "Intel", linha: "Intel Core",
-    geracao: "12ª Geração", preco: 2199.90, precoAntigo: 2399.90,
-    nucleos: 16, threads: 24, clock: "3.2 GHz", turbo: "5.2 GHz",
-    socket: "LGA 1700", avaliacao: 4.8, avaliacoes: 206,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i9 para aplicações pesadas."
-  },
-  {
-    id: 17, nome: "Intel Core i5-13400F", marca: "Intel", linha: "Intel Core",
-    geracao: "13ª Geração", preco: 999.90, precoAntigo: 1149.90,
-    nucleos: 10, threads: 16, clock: "2.5 GHz", turbo: "4.6 GHz",
-    socket: "LGA 1700", avaliacao: 4.8, avaliacoes: 194,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i5 de 13ª geração para jogos e tarefas diárias."
-  },
-  {
-    id: 18, nome: "Intel Core i7-13700K", marca: "Intel", linha: "Intel Core",
-    geracao: "13ª Geração", preco: 2299.90, precoAntigo: 2499.90,
-    nucleos: 16, threads: 24, clock: "3.4 GHz", turbo: "5.4 GHz",
-    socket: "LGA 1700", avaliacao: 4.9, avaliacoes: 211,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i7 desbloqueado de 13ª geração."
-  },
-  {
-    id: 19, nome: "Intel Core i9-13900KF", marca: "Intel", linha: "Intel Core",
-    geracao: "13ª Geração", preco: 2999.90, precoAntigo: 3299.90,
-    nucleos: 24, threads: 32, clock: "3.0 GHz", turbo: "5.8 GHz",
-    socket: "LGA 1700", avaliacao: 4.9, avaliacoes: 183,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i9 para computadores de alto desempenho."
-  },
-  {
-    id: 20, nome: "Intel Core i5-14400F", marca: "Intel", linha: "Intel Core",
-    geracao: "14ª Geração", preco: 1099.90, precoAntigo: 1249.90,
-    nucleos: 10, threads: 16, clock: "2.5 GHz", turbo: "4.7 GHz",
-    socket: "LGA 1700", avaliacao: 4.7, avaliacoes: 156,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i5 de 14ª geração."
-  },
-  {
-    id: 21, nome: "Intel Core i7-14700K", marca: "Intel", linha: "Intel Core",
-    geracao: "14ª Geração", preco: 2699.90, precoAntigo: 2899.90,
-    nucleos: 20, threads: 28, clock: "3.4 GHz", turbo: "5.6 GHz",
-    socket: "LGA 1700", avaliacao: 4.9, avaliacoes: 198,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i7 de 14ª geração para alto desempenho."
-  },
-  {
-    id: 22, nome: "Intel Core i9-14900K", marca: "Intel", linha: "Intel Core",
-    geracao: "14ª Geração", preco: 2786.99, precoAntigo: 3099.90,
-    nucleos: 24, threads: 32, clock: "3.2 GHz", turbo: "6.0 GHz",
-    socket: "LGA 1700", avaliacao: 4.9, avaliacoes: 312,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core i9 de 14ª geração, desenvolvido para tarefas exigentes."
-  },
-  {
-    id: 23, nome: "Intel Core i9-14900KF", marca: "Intel", linha: "Intel Core",
-    geracao: "14ª Geração", preco: 2799.90, precoAntigo: 3199.90,
-    nucleos: 24, threads: 32, clock: "3.2 GHz", turbo: "6.0 GHz",
-    socket: "LGA 1700", avaliacao: 4.9, avaliacoes: 410,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Versão desbloqueada sem vídeo integrado da linha Intel Core i9."
-  },
-  {
-    id: 24, nome: "Intel Core Ultra 5 225F", marca: "Intel", linha: "Intel Core Ultra",
-    geracao: "Core Ultra", preco: 1299.90, precoAntigo: 1449.90,
-    nucleos: 10, threads: 10, clock: "3.3 GHz", turbo: "4.9 GHz",
-    socket: "LGA 1851", avaliacao: 4.7, avaliacoes: 95,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core Ultra 5 para plataformas mais recentes."
-  },
-  {
-    id: 25, nome: "Intel Core Ultra 5 245KF", marca: "Intel", linha: "Intel Core Ultra",
-    geracao: "Core Ultra", preco: 1749.90, precoAntigo: 1899.90,
-    nucleos: 14, threads: 14, clock: "4.2 GHz", turbo: "5.2 GHz",
-    socket: "LGA 1851", avaliacao: 4.8, avaliacoes: 112,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core Ultra 5 desbloqueado."
-  },
-  {
-    id: 26, nome: "Intel Core Ultra 9 285K", marca: "Intel", linha: "Intel Core Ultra",
-    geracao: "Core Ultra", preco: 3699.90, precoAntigo: 3999.90,
-    nucleos: 24, threads: 24, clock: "3.7 GHz", turbo: "5.7 GHz",
-    socket: "LGA 1851", avaliacao: 4.9, avaliacoes: 86,
-    imagem: "https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=600",
-    descricao: "Processador Intel Core Ultra 9 para configurações avançadas."
-  },
-  {
-    id: 27, nome: "AMD Ryzen 5 5500", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 579.90, precoAntigo: 649.90,
-    nucleos: 6, threads: 12, clock: "3.6 GHz", turbo: "4.2 GHz",
-    socket: "AM4", avaliacao: 4.7, avaliacoes: 311,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 5 de entrada para computadores domésticos e gamer."
-  },
-  {
-    id: 28, nome: "AMD Ryzen 5 5600GT", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 789.90, precoAntigo: 899.90,
-    nucleos: 6, threads: 12, clock: "3.6 GHz", turbo: "4.6 GHz",
-    socket: "AM4", avaliacao: 4.8, avaliacoes: 267,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen com gráficos integrados para diferentes configurações."
-  },
-  {
-    id: 29, nome: "AMD Ryzen 7 5800X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 1199.90, precoAntigo: 1399.90,
-    nucleos: 8, threads: 16, clock: "3.8 GHz", turbo: "4.7 GHz",
-    socket: "AM4", avaliacao: 4.8, avaliacoes: 221,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 7 para jogos e produtividade."
-  },
-  {
-    id: 30, nome: "AMD Ryzen 7 5800X3D", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 1799.90, precoAntigo: 1999.90,
-    nucleos: 8, threads: 16, clock: "3.4 GHz", turbo: "4.5 GHz",
-    socket: "AM4", avaliacao: 4.9, avaliacoes: 427,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen com tecnologia 3D V-Cache."
-  },
-  {
-    id: 31, nome: "AMD Ryzen 9 5900X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 1799.90, precoAntigo: 1999.90,
-    nucleos: 12, threads: 24, clock: "3.7 GHz", turbo: "4.8 GHz",
-    socket: "AM4", avaliacao: 4.8, avaliacoes: 176,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 9 com múltiplos núcleos para produtividade."
-  },
-  {
-    id: 32, nome: "AMD Ryzen 9 5950X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 5000", preco: 2299.90, precoAntigo: 2499.90,
-    nucleos: 16, threads: 32, clock: "3.4 GHz", turbo: "4.9 GHz",
-    socket: "AM4", avaliacao: 4.9, avaliacoes: 152,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 9 de 16 núcleos para cargas de trabalho intensas."
-  },
-  {
-    id: 33, nome: "AMD Ryzen 5 7600X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 7000", preco: 1299.90, precoAntigo: 1449.90,
-    nucleos: 6, threads: 12, clock: "4.7 GHz", turbo: "5.3 GHz",
-    socket: "AM5", avaliacao: 4.8, avaliacoes: 188,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 5 desbloqueado da série 7000."
-  },
-  {
-    id: 34, nome: "AMD Ryzen 7 7700X", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 7000", preco: 1899.90, precoAntigo: 2099.90,
-    nucleos: 8, threads: 16, clock: "4.5 GHz", turbo: "5.4 GHz",
-    socket: "AM5", avaliacao: 4.8, avaliacoes: 164,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 7 para jogos e aplicações profissionais."
-  },
-  {
-    id: 35, nome: "AMD Ryzen 9 9900X3D", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 9000", preco: 3299.90, precoAntigo: 3599.90,
-    nucleos: 12, threads: 24, clock: "4.4 GHz", turbo: "5.5 GHz",
-    socket: "AM5", avaliacao: 4.9, avaliacoes: 93,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 9 com tecnologia 3D V-Cache."
-  },
-  {
-    id: 36, nome: "AMD Ryzen 9 9950X3D", marca: "AMD", linha: "AMD Ryzen",
-    geracao: "Ryzen 9000", preco: 4499.90, precoAntigo: 4799.90,
-    nucleos: 16, threads: 32, clock: "4.3 GHz", turbo: "5.7 GHz",
-    socket: "AM5", avaliacao: 4.9, avaliacoes: 118,
-    imagem: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600",
-    descricao: "Processador Ryzen 9 de alto desempenho com tecnologia 3D V-Cache."
-  }
+// Se uma imagem não carregar, usa o processador.png no lugar
+document.addEventListener("error", (e) => {
+  const el = e.target;
+  if (el.tagName !== "IMG" || el.dataset.falhou) return;
+  el.dataset.falhou = "1";
+  el.src = "imagens/processador.png";
+}, true);
+
+// Ícones (SVG)
+const svg = (d) => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const ICONES = {
+  cart: svg('<path d="M3 4h3l2 12h10l2-8H7"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/>'),
+  heart: svg('<path d="M12 20s-8-5-8-11a4.5 4.5 0 018-3 4.5 4.5 0 018 3c0 6-8 11-8 11z"/>'),
+  filtro: svg('<path d="M4 5h16l-6 8v6l-4-2v-4z"/>'),
+  seta: svg('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+  esq: svg('<path d="M15 5l-7 7 7 7"/>'),
+  dir: svg('<path d="M9 5l7 7-7 7"/>'),
+  raio: svg('<path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="currentColor"/>'),
+  gauge: svg('<path d="M4 18a9 9 0 1116 0"/><path d="M12 14l4-5"/><circle cx="12" cy="14" r="1.2" fill="currentColor"/>'),
+};
+
+// Preços e dados técnicos são exemplos: troque pelos reais (ou por uma API).
+// Imagens: imagens/produtos/<slug>.png e imagens/produtos/<slug>-2.png
+// Colunas: slug, nome, marca, geração, preço, preço antigo, núcleos, threads, GHz, nota, avaliações, popularidade
+const DADOS = [
+  ["ryzen-5-5600gt", "Processador Ryzen 5 5600GT", "AMD", "Ryzen 5000", 899.9, 1099.9, 6, 12, 4.6, 4.6, 210, 80],
+  ["ryzen-7-9800x3d", "Processador Ryzen 9800X3D", "AMD", "Ryzen 9000", 3899.9, 4299.9, 8, 16, 5.2, 4.9, 540, 100],
+  ["i5-12400f", "Processador Intel i5-12400F", "Intel", "12ª geração", 749.9, 899.9, 6, 12, 4.4, 4.7, 980, 95],
+  ["ryzen-7-5700x", "Processador Ryzen 7 5700X", "AMD", "Ryzen 5000", 1199.9, 1399.9, 8, 16, 4.6, 4.8, 620, 90],
+  ["i5-14600kf", "Processador Intel i5-14600KF", "Intel", "14ª geração", 1749.9, 1999.9, 14, 20, 5.3, 4.7, 330, 85],
+  ["ultra-5-245kf", "Processador Intel Ultra 5 245KF 3.6 Ghz", "Intel", "", 1899.9, 2099.9, 14, 14, 5.2, 4.5, 90, 60],
+  ["ryzen-5-9600x", "Processador Ryzen 5 9600X", "AMD", "Ryzen 9000", 1599.9, 1799.9, 6, 12, 5.4, 4.7, 275, 88],
+  ["ryzen-9-9950x3d", "Processador Ryzen 9 9950X3D", "AMD", "Ryzen 9000", 5999.9, 6499.9, 16, 32, 5.7, 4.9, 120, 70],
+  ["i9-14900k", "Intel Core i9-14900K", "Intel", "14ª geração", 2786.99, 3240.99, 24, 32, 6.0, 4.5, 345, 92],
+
+  ["ryzen-5-5500", "Processador Ryzen 5 5500", "AMD", "Ryzen 5000", 619.9, 749.9, 6, 12, 4.2, 4.5, 760, 78],
+  ["ryzen-5-5600", "Processador Ryzen 5 5600", "AMD", "Ryzen 5000", 749.9, 899.9, 6, 12, 4.4, 4.7, 1120, 94],
+  ["ryzen-5-5600x", "Processador Ryzen 5 5600X", "AMD", "Ryzen 5000", 849.9, 999.9, 6, 12, 4.6, 4.7, 890, 89],
+  ["ryzen-7-5800x3d", "Processador Ryzen 7 5800X3D", "AMD", "Ryzen 5000", 1899.9, 2199.9, 8, 16, 4.5, 4.9, 430, 82],
+  ["ryzen-9-5900x", "Processador Ryzen 9 5900X", "AMD", "Ryzen 5000", 1699.9, 1999.9, 12, 24, 4.8, 4.8, 310, 66],
+  ["ryzen-5-7500f", "Processador Ryzen 5 7500F", "AMD", "Ryzen 7000", 1049.9, 1249.9, 6, 12, 5.0, 4.7, 650, 86],
+  ["ryzen-5-7600", "Processador Ryzen 5 7600", "AMD", "Ryzen 7000", 1199.9, 1399.9, 6, 12, 5.1, 4.8, 480, 84],
+  ["ryzen-7-7700", "Processador Ryzen 7 7700", "AMD", "Ryzen 7000", 1799.9, 2049.9, 8, 16, 5.3, 4.8, 260, 72],
+  ["ryzen-7-7800x3d", "Processador Ryzen 7 7800X3D", "AMD", "Ryzen 7000", 2799.9, 3199.9, 8, 16, 5.0, 4.9, 710, 97],
+  ["ryzen-9-7900x", "Processador Ryzen 9 7900X", "AMD", "Ryzen 7000", 2399.9, 2799.9, 12, 24, 5.6, 4.7, 190, 64],
+  ["ryzen-9-7950x", "Processador Ryzen 9 7950X", "AMD", "Ryzen 7000", 3399.9, 3899.9, 16, 32, 5.7, 4.8, 150, 61],
+  ["ryzen-7-9700x", "Processador Ryzen 7 9700X", "AMD", "Ryzen 9000", 2399.9, 2699.9, 8, 16, 5.5, 4.8, 340, 87],
+  ["ryzen-9-9900x", "Processador Ryzen 9 9900X", "AMD", "Ryzen 9000", 3199.9, 3599.9, 12, 24, 5.6, 4.7, 140, 63],
+  ["i3-12100f", "Processador Intel i3-12100F", "Intel", "12ª geração", 429.9, 519.9, 4, 8, 4.3, 4.6, 1500, 91],
+  ["i5-12400", "Processador Intel i5-12400", "Intel", "12ª geração", 799.9, 949.9, 6, 12, 4.4, 4.6, 420, 74],
+  ["i5-12600kf", "Processador Intel i5-12600KF", "Intel", "12ª geração", 1099.9, 1299.9, 10, 16, 4.9, 4.7, 360, 77],
+  ["i7-12700kf", "Processador Intel i7-12700KF", "Intel", "12ª geração", 1499.9, 1749.9, 12, 20, 5.0, 4.7, 210, 68],
+  ["i9-12900k", "Processador Intel i9-12900K", "Intel", "12ª geração", 1999.9, 2399.9, 16, 24, 5.2, 4.6, 160, 58],
+  ["i3-13100f", "Processador Intel i3-13100F", "Intel", "13ª geração", 549.9, 649.9, 4, 8, 4.5, 4.6, 540, 79],
+  ["i5-13400f", "Processador Intel i5-13400F", "Intel", "13ª geração", 1099.9, 1249.9, 10, 16, 4.6, 4.7, 780, 83],
+  ["i5-13600k", "Processador Intel i5-13600K", "Intel", "13ª geração", 1799.9, 2099.9, 14, 20, 5.1, 4.8, 520, 81],
+  ["i7-13700k", "Processador Intel i7-13700K", "Intel", "13ª geração", 2399.9, 2799.9, 16, 24, 5.4, 4.8, 300, 73],
+  ["i9-13900k", "Processador Intel i9-13900K", "Intel", "13ª geração", 3199.9, 3699.9, 24, 32, 5.8, 4.7, 220, 67],
+  ["i3-14100f", "Processador Intel i3-14100F", "Intel", "14ª geração", 599.9, 699.9, 4, 8, 4.7, 4.6, 280, 69],
+  ["i5-14400f", "Processador Intel i5-14400F", "Intel", "14ª geração", 1299.9, 1499.9, 10, 16, 4.7, 4.7, 410, 76],
+  ["i7-14700k", "Processador Intel i7-14700K", "Intel", "14ª geração", 2899.9, 3299.9, 20, 28, 5.6, 4.8, 390, 85],
 ];
 
-function formatarPreco(valor) {
-  return valor.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
-}
+const PRODUTOS = DADOS.map(([slug, nome, marca, geracao, preco, antigo, nucleos, threads, ghz, nota, aval, pop], i) => ({
+  id: i + 1, slug, nome, marca, geracao, preco, antigo, nucleos, threads, clock: `${ghz.toFixed(1)} GHz`, nota, aval, pop,
+}));
 
-function obterProduto(id) {
-  return produtos.find(produto => produto.id === Number(id));
-}
+const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });

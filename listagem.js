@@ -1,125 +1,51 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const lista = document.getElementById("lista-produtos");
-  if (!lista) return;
+const $ = (s) => document.querySelector(s);
+const FAIXAS = [[0, 1000], [1000, 2000], [2000, 4000], [4000, Infinity]];
+const GERACOES = ["12ª geração", "13ª geração", "14ª geração", "Ryzen 5000", "Ryzen 7000", "Ryzen 9000"];
+const busca = (new URLSearchParams(location.search).get("q") || "").toLowerCase();
 
-  const contador = document.getElementById("contador-produtos");
-  const semProdutos = document.getElementById("sem-produtos");
-  const filtroPreco = document.getElementById("filtro-preco");
-  const valorPreco = document.getElementById("valor-preco");
-  const ordenacao = document.getElementById("ordenacao");
-  const limpar = document.getElementById("limpar-filtros");
+$("#ico-filtro").insertAdjacentHTML("afterbegin", ICONES.filtro);
 
-  function valoresSelecionados(nome) {
-    return [...document.querySelectorAll(`input[name="${nome}"]:checked`)]
-      .map(input => input.value);
-  }
+// Monta os checkboxes de marca e geração com a contagem de produtos
+const conta = (campo, valor) => PRODUTOS.filter((p) => p[campo] === valor).length;
+const marcas = [...new Set(PRODUTOS.map((p) => p.marca))];
+$("#f-marca").insertAdjacentHTML("beforeend", marcas.map((m) =>
+  `<label><input type="checkbox" name="marca" value="${m}"> ${m} <small>(${conta("marca", m)})</small></label>`).join(""));
+$("#f-geracao").insertAdjacentHTML("beforeend", GERACOES.map((g) =>
+  `<label><input type="checkbox" name="geracao" value="${g}"> ${g}</label>`).join(""));
 
-  function renderizarProdutos() {
-    const marcas = valoresSelecionados("marca");
-    const linhas = valoresSelecionados("linha");
-    const geracoes = valoresSelecionados("geracao");
-    const precoMaximo = Number(filtroPreco.value);
-    const parametros = new URLSearchParams(window.location.search);
-    const busca = (parametros.get("busca") || "").toLowerCase();
+const marcados = (nome) => [...document.querySelectorAll(`input[name="${nome}"]:checked`)].map((i) => i.value);
 
-    let filtrados = produtos.filter(produto => {
-      const correspondeMarca = !marcas.length || marcas.includes(produto.marca);
-      const correspondeLinha = !linhas.length || linhas.includes(produto.linha);
-      const correspondeGeracao = !geracoes.length || geracoes.includes(produto.geracao);
-      const correspondePreco = produto.preco <= precoMaximo;
-      const correspondeBusca = !busca || produto.nome.toLowerCase().includes(busca);
+function filtrar() {
+  const faixas = marcados("faixa").map((i) => FAIXAS[i]);
+  const ms = marcados("marca");
+  const gs = marcados("geracao");
+  const min = parseFloat($("#min").value) || 0;
+  const max = parseFloat($("#max").value) || Infinity;
 
-      return correspondeMarca && correspondeLinha &&
-        correspondeGeracao && correspondePreco && correspondeBusca;
-    });
+  const lista = PRODUTOS.filter((p) =>
+    (!busca || p.nome.toLowerCase().includes(busca)) &&
+    p.preco >= min && p.preco <= max &&
+    (!faixas.length || faixas.some(([a, b]) => p.preco >= a && p.preco < b)) &&
+    (!ms.length || ms.includes(p.marca)) &&
+    (!gs.length || gs.includes(p.geracao)));
 
-    switch (ordenacao.value) {
-      case "menor-preco":
-        filtrados.sort((a, b) => a.preco - b.preco);
-        break;
-      case "maior-preco":
-        filtrados.sort((a, b) => b.preco - a.preco);
-        break;
-      case "nome":
-        filtrados.sort((a, b) => a.nome.localeCompare(b.nome));
-        break;
-      default:
-        filtrados.sort((a, b) => b.avaliacao - a.avaliacao);
-    }
+  const ordem = $("#ordem").value;
+  lista.sort((a, b) =>
+    ordem === "menor" ? a.preco - b.preco :
+    ordem === "maior" ? b.preco - a.preco :
+    ordem === "nome" ? a.nome.localeCompare(b.nome) : b.pop - a.pop);
 
-    contador.textContent = `Mostrando ${filtrados.length} de ${produtos.length} produtos`;
-    semProdutos.hidden = filtrados.length !== 0;
+  $("#contagem").textContent = `Mostrando ${lista.length} de ${PRODUTOS.length}`;
+  $("#grade").innerHTML = lista.length ? lista.map((p) => `
+    <a class="pcard" href="produto.html?id=${p.id}">
+      <img src="imagens/produtos/${p.slug}.png" alt="${p.nome}" loading="lazy">
+      <h3>${p.nome}</h3>
+      <p>Potência e performance<br>para o seu setup.</p>
+      <span class="btn btn--mini">Ver produto ${ICONES.seta}</span>
+    </a>`).join("") : `<p class="vazio">Nenhum produto encontrado com esses filtros.</p>`;
+}
 
-    lista.innerHTML = filtrados.map(produto => {
-      const favoritos = JSON.parse(localStorage.getItem("favoritosMonkey") || "[]");
-      const favoritado = favoritos.includes(produto.id);
-
-      return `
-        <article class="card-produto">
-          <div class="imagem-produto">
-            <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
-            <button class="btn-favorito ${favoritado ? "favoritado" : ""}"
-              onclick="clicarFavorito(${produto.id}, this)" aria-label="Favoritar produto">
-              ${favoritado ? "♥" : "♡"}
-            </button>
-          </div>
-
-          <div class="informacoes-produto">
-            <span class="marca-produto">${produto.marca}</span>
-            <a class="nome-produto" href="produto.html?id=${produto.id}">
-              ${produto.nome}
-            </a>
-
-            <p class="especificacoes-resumo">
-              ${produto.nucleos} núcleos • ${produto.threads} threads • ${produto.turbo}
-            </p>
-
-            <div class="avaliacao">
-              <span>★</span> ${produto.avaliacao} (${produto.avaliacoes} avaliações)
-            </div>
-
-            <div class="preco-produto">
-              <del>${formatarPreco(produto.precoAntigo)}</del>
-              <strong>${formatarPreco(produto.preco)}</strong>
-            </div>
-
-            <button class="btn-carrinho" onclick="adicionarAoCarrinho(${produto.id})">
-              🛒 Adicionar ao carrinho
-            </button>
-          </div>
-        </article>
-      `;
-    }).join("");
-  }
-
-  window.clicarFavorito = function(id, botao) {
-    const favoritado = alternarFavorito(id);
-    botao.textContent = favoritado ? "♥" : "♡";
-    botao.classList.toggle("favoritado", favoritado);
-  };
-
-  document.querySelectorAll(".grupo-filtro input").forEach(input => {
-    input.addEventListener("change", renderizarProdutos);
-  });
-
-  filtroPreco.addEventListener("input", () => {
-    valorPreco.textContent = formatarPreco(Number(filtroPreco.value));
-    renderizarProdutos();
-  });
-
-  ordenacao.addEventListener("change", renderizarProdutos);
-
-  limpar.addEventListener("click", () => {
-    document.querySelectorAll(".grupo-filtro input").forEach(input => {
-      input.checked = false;
-    });
-
-    filtroPreco.value = 4000;
-    valorPreco.textContent = formatarPreco(4000);
-    ordenacao.value = "popular";
-    renderizarProdutos();
-  });
-
-  valorPreco.textContent = formatarPreco(4000);
-  renderizarProdutos();
-});
+$("#filtros").addEventListener("input", filtrar);
+$("#filtros").addEventListener("reset", () => setTimeout(filtrar));
+$("#ordem").addEventListener("change", filtrar);
+filtrar();
